@@ -21,7 +21,6 @@ import {
   Route,
   ShieldCheck,
   Sparkles,
-  SteeringWheel,
   Target,
   TrafficCone,
   X,
@@ -41,7 +40,7 @@ const painPoints = [
     value: "Phố đông / giao lộ",
   },
   {
-    icon: SteeringWheel,
+    icon: Gauge,
     title: "Sợ ngõ nhỏ & đường hẹp",
     text: "Chưa chắc cách căn thân xe, tránh xe ngược chiều và xử lý điểm mù.",
     value: "Ngõ nhỏ / đường hẹp",
@@ -219,7 +218,7 @@ function RouteVisual() {
         <circle cx="575" cy="94" r="10" fill="#ffffff" />
       </svg>
       <div className="route-pin route-pin-a"><MapPin size={15} /> Phố đông</div>
-      <div className="route-pin route-pin-b"><SteeringWheel size={15} /> Ghép xe</div>
+      <div className="route-pin route-pin-b"><Gauge size={15} /> Ghép xe</div>
       <div className="route-pin route-pin-c"><Gauge size={15} /> Cao tốc</div>
       <div className="dashboard-card">
         <div className="dashboard-topline">
@@ -579,7 +578,7 @@ function App() {
         <section id="lead" className="section lead-section">
           <div className="container lead-layout">
             <div className="lead-copy">
-              <div className="lead-orbit"><div><SteeringWheel size={50} /></div></div>
+              <div className="lead-orbit"><div><Gauge size={50} /></div></div>
               <SectionEyebrow>BẮT ĐẦU TỪ 2 PHÚT TRAO ĐỔI</SectionEyebrow>
               <h2>Không chắc nên học 3 buổi, 5 buổi<br />hay một lộ trình riêng?</h2>
               <p>Cho DNT biết tình trạng hiện tại. Tư vấn viên sẽ giúp xác định trọng tâm cần luyện trước khi bạn quyết định đăng ký.</p>
