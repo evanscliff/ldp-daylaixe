@@ -1,0 +1,32 @@
+# Build error
+
+```text
+
+> dnt-driving-landing-page@0.1.0 build
+> vite build
+
+[36mvite v8.1.5 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 3507 modules transformed.
+rendering chunks...
+[31m✗[39m Build failed in 742ms
+[31merror during build:
+[31mBuild failed with 1 error:
+
+[31m[MISSING_EXPORT] [0m"SteeringWheel" is not exported by "node_modules/lucide-react/dist/esm/lucide-react.mjs".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/App.jsx:3:218 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249mA[0m[38;5;249mr[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mw[0m[38;5;249mR[0m[38;5;249mi[0m[38;5;249mg[0m[38;5;249mh[0m[38;5;249mt[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mB[0m[38;5;249ma[0m[38;5;249md[0m[38;5;249mg[0m[38;5;249me[0m[38;5;249mC[0m[38;5;249mh[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mk[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249ma[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249md[0m[38;5;249ma[0m[38;5;249mr[0m[38;5;249mD[0m[38;5;249ma[0m[38;5;249my[0m[38;5;249ms[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249ma[0m[38;5;249mr[0m[38;5;249mF[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249mh[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mk[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249mh[0m[38;5;249me[0m[38;5;249mv[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mR[0m[38;5;249mi[0m[38;5;249mg[0m[38;5;249mh[0m[38;5;249mt[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249mi[0m[38;5;249mr[0m[38;5;249mc[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249mC[0m[38;5;249mh[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mk[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mC[0m[38;5;249ml[0m[38;5;249mo[0m[38;5;249mc[0m[38;5;249mk[0m[38;5;249m3[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mG[0m[38;5;249ma[0m[38;5;249mu[0m[38;5;249mg[0m[38;5;249me[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mG[0m[38;5;249mr[0m[38;5;249ma[0m[38;5;249md[0m[38;5;249mu[0m[38;5;249ma[0m[38;5;249mt[0m[38;5;249mi[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mC[0m[38;5;249ma[0m[38;5;249mp[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mH[0m[38;5;249me[0m[38;5;249ma[0m[38;5;249md[0m[38;5;249mp[0m[38;5;249mh[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249me[0m[38;5;249ms[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mM[0m[38;5;249ma[0m[38;5;249mp[0m[38;5;249mP[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mM[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249mu[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mM[0m[38;5;249me[0m[38;5;249ms[0m[38;5;249ms[0m[38;5;249ma[0m[38;5;249mg[0m[38;5;249me[0m[38;5;249mC[0m[38;5;249mi[0m[38;5;249mr[0m[38;5;249mc[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mM[0m[38;5;249mo[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mN[0m[38;5;249ma[0m[38;5;249mv[0m[38;5;249mi[0m[38;5;249mg[0m[38;5;249ma[0m[38;5;249mt[0m[38;5;249mi[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mP[0m[38;5;249mh[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249me[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mR[0m[38;5;249mo[0m[38;5;249mu[0m[38;5;249mt[0m[38;5;249me[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mS[0m[38;5;249mh[0m[38;5;249mi[0m[38;5;249me[0m[38;5;249ml[0m[38;5;249md[0m[38;5;249mC[0m[38;5;249mh[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mk[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mS[0m[38;5;249mp[0m[38;5;249ma[0m[38;5;249mr[0m[38;5;249mk[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249ms[0m[38;5;249m,[0m[38;5;249m [0mSteeringWheel[38;5;249m,[0m[38;5;249m [0m[38;5;249mT[0m[38;5;249ma[0m[38;5;249mr[0m[38;5;249mg[0m[38;5;249me[0m[38;5;249mt[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mT[0m[38;5;249mr[0m[38;5;249ma[0m[38;5;249mf[0m[38;5;249mf[0m[38;5;249mi[0m[38;5;249mc[0m[38;5;249mC[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249me[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mX[0m[38;5;249m,[0m[38;5;249m [0m[38;5;249mZ[0m[38;5;249ma[0m[38;5;249mp[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m"[0m[38;5;249ml[0m[38;5;249mu[0m[38;5;249mc[0m[38;5;249mi[0m[38;5;249md[0m[38;5;249me[0m[38;5;249m-[0m[38;5;249mr[0m[38;5;249me[0m[38;5;249ma[0m[38;5;249mc[0m[38;5;249mt[0m[38;5;249m"[0m[38;5;249m;[0m
+ [38;5;240m  │[0m                                                                                                                                                                                                                          ──────┬──────  
+ [38;5;240m  │[0m                                                                                                                                                                                                                                ╰──────── Missing export
+[38;5;246m───╯[0m
+[31m
+    at aggregateBindingErrorsIntoJsError (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:48:18)
+    at unwrapBindingResult (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:18:128)
+    at #build (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/rolldown/dist/shared/rolldown-build-CtPvmZgJ.mjs:3276:34)
+    at async buildEnvironment (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/vite/dist/node/chunks/node.js:33061:66)
+    at async Object.build (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/vite/dist/node/chunks/node.js:33483:19)
+    at async Object.buildApp (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/vite/dist/node/chunks/node.js:33480:153)
+    at async CAC.<anonymous> (file:///home/runner/work/ldp-daylaixe/ldp-daylaixe/node_modules/vite/dist/node/cli.js:776:3) {
+  errors: [Getter/Setter]
+}[39m
+```
