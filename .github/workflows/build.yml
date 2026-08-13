@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,4 +22,24 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: npm run build
+        id: build
+        continue-on-error: true
+        run: npm run build > build.log 2>&1
+      - name: Capture build failure
+        if: steps.build.outcome == 'failure' && github.event_name == 'push'
+        run: |
+          {
+            echo '# Build error'
+            echo
+            echo '```text'
+            cat build.log
+            echo '```'
+          } > BUILD_ERROR.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add BUILD_ERROR.md
+          git commit -m 'chore: capture build error [skip ci]'
+          git push
+      - name: Fail when build failed
+        if: steps.build.outcome == 'failure'
+        run: exit 1
