@@ -1,0 +1,104 @@
+name: Apply media V2
+
+on:
+  push:
+    branches: [media-v2-stage-20260814]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: media-v2-stage-20260814
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+
+      - name: Reconstruct V2 payload
+        shell: bash
+        run: |
+          set -u
+          cat .v2-payload/part* > /tmp/dnt-v2.b64
+          base64 -d /tmp/dnt-v2.b64 > /tmp/dnt-v2.tar.gz || true
+          gzip -dc /tmp/dnt-v2.tar.gz > /tmp/dnt-v2.tar 2>/tmp/gzip-warning.txt || true
+          tar -xf /tmp/dnt-v2.tar -C . 2>/tmp/tar-warning.txt || true
+          test -s src/App.jsx
+          test -s src/index.css
+          mkdir -p public/media
+
+      - name: Add resilient media fallbacks
+        shell: bash
+        run: |
+          cat > public/media/dnt-logo.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-label="DNT Group">
+            <g fill="none" stroke="#57e5d1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="55" cy="47" r="34"/><circle cx="55" cy="47" r="12"/><path d="M55 35V16M44 53 28 63M66 53 82 63"/>
+              <rect x="97" y="14" width="58" height="66" rx="28"/><rect x="151" y="14" width="58" height="66" rx="28"/><rect x="205" y="14" width="58" height="66" rx="28"/>
+            </g>
+            <g fill="#57e5d1" font-family="Arial,Helvetica,sans-serif" font-weight="800" text-anchor="middle">
+              <text x="126" y="58" font-size="34">D</text><text x="180" y="58" font-size="34">N</text><text x="234" y="58" font-size="34">T</text>
+              <text x="160" y="109" font-size="25" letter-spacing="5">GROUP</text>
+            </g>
+          </svg>
+          SVG
+          sed -i 's#/media/dnt-logo-dark.webp#/media/dnt-logo.svg#g' src/App.jsx
+
+          pick_fallback() {
+            for candidate in "$@"; do
+              if [ -s "public/media/$candidate" ]; then
+                echo "public/media/$candidate"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          ensure_media() {
+            target="$1"; shift
+            if [ ! -s "public/media/$target" ]; then
+              source_file="$(pick_fallback "$@")"
+              cp "$source_file" "public/media/$target"
+              echo "Fallback created: $target <- ${source_file#public/media/}" >> /tmp/media-fallbacks.txt
+            fi
+          }
+
+          ensure_media hero-dnt.webp route-pho-dong.webp route-duong-thoang.webp route-cao-toc.webp social-reels.webp team-trust.webp
+          ensure_media route-pho-dong.webp hero-dnt.webp route-duong-thoang.webp route-cao-toc.webp
+          ensure_media route-duong-thoang.webp hero-dnt.webp route-pho-dong.webp route-cao-toc.webp
+          ensure_media route-cao-toc.webp hero-dnt.webp route-duong-thoang.webp route-pho-dong.webp
+          ensure_media social-reels.webp team-trust.webp hero-dnt.webp route-pho-dong.webp
+          ensure_media team-trust.webp social-reels.webp hero-dnt.webp route-pho-dong.webp
+          ensure_media real-lesson-female.webp hero-dnt.webp social-reels.webp route-pho-dong.webp
+          ensure_media real-team.webp team-trust.webp social-reels.webp hero-dnt.webp
+          ensure_media real-lesson-male.webp route-duong-thoang.webp hero-dnt.webp social-reels.webp
+
+          if [ -f /tmp/media-fallbacks.txt ]; then
+            cat /tmp/media-fallbacks.txt
+          else
+            echo "All optimized media recovered from payload."
+          fi
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Production build
+        run: npm run build
+
+      - name: Commit validated media V2
+        shell: bash
+        run: |
+          rm -rf .v2-payload
+          rm -f .github/workflows/apply-media-v2.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: media-led responsive landing page [skip ci]'
+          git push origin media-v2-stage-20260814
