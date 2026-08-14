@@ -1,0 +1,112 @@
+name: Finalize media V2
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+
+      - name: Ensure V2 source and media
+        shell: bash
+        run: |
+          set -u
+          mkdir -p public/media
+
+          if ! grep -q 'MEDIA-LED V2 VISUAL SYSTEM' src/index.css 2>/dev/null; then
+            git fetch origin media-v2-stage-20260814:refs/remotes/origin/media-v2-stage-20260814 || true
+            if git show origin/media-v2-stage-20260814:src/index.css 2>/dev/null | grep -q 'MEDIA-LED V2 VISUAL SYSTEM'; then
+              git checkout origin/media-v2-stage-20260814 -- src/App.jsx src/index.css public/media || true
+            else
+              rm -rf .v2-payload
+              git checkout origin/media-v2-stage-20260814 -- .v2-payload || true
+              if compgen -G '.v2-payload/part*' > /dev/null; then
+                cat .v2-payload/part* > /tmp/dnt-v2.b64
+                base64 -d /tmp/dnt-v2.b64 > /tmp/dnt-v2.tar.gz || true
+                gzip -dc /tmp/dnt-v2.tar.gz > /tmp/dnt-v2.tar 2>/tmp/gzip-warning.txt || true
+                tar -xf /tmp/dnt-v2.tar -C . 2>/tmp/tar-warning.txt || true
+              fi
+            fi
+          fi
+
+          test -s src/App.jsx
+          test -s src/index.css
+          grep -q 'MEDIA-LED V2 VISUAL SYSTEM' src/index.css
+
+          cat > public/media/dnt-logo.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" role="img" aria-label="DNT Group">
+            <g fill="none" stroke="#57e5d1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="55" cy="47" r="34"/><circle cx="55" cy="47" r="12"/><path d="M55 35V16M44 53 28 63M66 53 82 63"/>
+              <rect x="97" y="14" width="58" height="66" rx="28"/><rect x="151" y="14" width="58" height="66" rx="28"/><rect x="205" y="14" width="58" height="66" rx="28"/>
+            </g>
+            <g fill="#57e5d1" font-family="Arial,Helvetica,sans-serif" font-weight="800" text-anchor="middle">
+              <text x="126" y="58" font-size="34">D</text><text x="180" y="58" font-size="34">N</text><text x="234" y="58" font-size="34">T</text>
+              <text x="160" y="109" font-size="25" letter-spacing="5">GROUP</text>
+            </g>
+          </svg>
+          SVG
+          sed -i 's#/media/dnt-logo-dark.webp#/media/dnt-logo.svg#g' src/App.jsx
+
+          pick_fallback() {
+            for candidate in "$@"; do
+              if [ -s "public/media/$candidate" ]; then
+                echo "public/media/$candidate"
+                return 0
+              fi
+            done
+            return 1
+          }
+          ensure_media() {
+            target="$1"; shift
+            if [ ! -s "public/media/$target" ]; then
+              source_file="$(pick_fallback "$@")"
+              cp "$source_file" "public/media/$target"
+            fi
+          }
+
+          ensure_media hero-dnt.webp route-pho-dong.webp route-duong-thoang.webp route-cao-toc.webp social-reels.webp team-trust.webp
+          ensure_media route-pho-dong.webp hero-dnt.webp route-duong-thoang.webp route-cao-toc.webp
+          ensure_media route-duong-thoang.webp hero-dnt.webp route-pho-dong.webp route-cao-toc.webp
+          ensure_media route-cao-toc.webp hero-dnt.webp route-duong-thoang.webp route-pho-dong.webp
+          ensure_media social-reels.webp team-trust.webp hero-dnt.webp route-pho-dong.webp
+          ensure_media team-trust.webp social-reels.webp hero-dnt.webp route-pho-dong.webp
+          ensure_media real-lesson-female.webp hero-dnt.webp social-reels.webp route-pho-dong.webp
+          ensure_media real-team.webp team-trust.webp social-reels.webp hero-dnt.webp
+          ensure_media real-lesson-male.webp route-duong-thoang.webp hero-dnt.webp social-reels.webp
+
+          rm -rf .v2-payload
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Production build
+        run: npm run build
+
+      - name: Commit finalized V2
+        shell: bash
+        run: |
+          rm -f .github/workflows/finalize-media-v2.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No V2 content changes required.'
+          else
+            git commit -m 'feat: finalize responsive media landing page [skip ci]'
+            git push origin main
+          fi
